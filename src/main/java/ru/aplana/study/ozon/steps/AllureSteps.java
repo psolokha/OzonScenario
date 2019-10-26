@@ -8,7 +8,7 @@ class AllureSteps {
     @Step("Выполняем поиск {item} через строку поиска")
     void searchItem(String item) {
         MainPage main = new MainPage();
-        main.serchItem(item);
+        main.searchItem(item);
     }
 
 }
