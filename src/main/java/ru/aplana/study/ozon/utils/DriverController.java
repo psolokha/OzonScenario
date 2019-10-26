@@ -13,10 +13,12 @@ public class DriverController {
 
     private DriverController() {
         Properties properties = ProjectProperties.getProperties();
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/drivers/chromedriver.exe");
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Long.getLong(properties.getProperty("timeouts.implicityWait")), TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(Long.getLong(properties.getProperty("timeouts.pageLoad")), TimeUnit.SECONDS);
-
+        driver.manage().timeouts().implicitlyWait(Integer.parseInt(properties.getProperty("timeouts.implicitlyWait")), TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(Integer.parseInt(properties.getProperty("timeouts.pageLoad")), TimeUnit.SECONDS);
+        driver.manage().window().maximize();
+        driver.get(properties.getProperty("url"));
     }
 
     public static WebDriver getDriver() {
