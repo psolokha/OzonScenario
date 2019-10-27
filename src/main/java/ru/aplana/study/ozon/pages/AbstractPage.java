@@ -1,15 +1,16 @@
 package ru.aplana.study.ozon.pages;
 
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.aplana.study.ozon.utils.DriverController;
-
-import java.util.function.Function;
 
 public abstract class AbstractPage {
 
@@ -38,10 +39,6 @@ public abstract class AbstractPage {
 
     void waitElement(WebElement element) {
         new WebDriverWait(driver, 10).ignoring(WebDriverException.class).until(ExpectedConditions.visibilityOf(element));
-    }
-
-    void pause() {
-        new Actions(driver).pause(1000).build().perform();
     }
 
     void smartClick(WebElement element) {

@@ -2,7 +2,6 @@ package ru.aplana.study.ozon.pages;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import ru.aplana.study.ozon.utils.ItemsContainer;
 
 import java.util.List;
 

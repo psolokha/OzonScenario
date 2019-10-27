@@ -53,8 +53,6 @@ public class SearchResultsPage extends AbstractPage {
     @FindBy(xpath = "//div[@class='search-show-container']/label")
     private WebElement brandItem;
 
-
-
     public void filterBrands(String... brands) {
         moveToElement(filterBrandsBlock);
         smartClick(showAllBrands);
@@ -76,9 +74,6 @@ public class SearchResultsPage extends AbstractPage {
         }
     }
 
-
-
-
     private WebElement getItemByIndex(Integer index) {
         for (WebElement element: resultSet) {
             if (element.getAttribute("data-index").equals(String.valueOf(index))) {
@@ -94,7 +89,6 @@ public class SearchResultsPage extends AbstractPage {
         if ("Высокий рейтинг".equalsIgnoreCase(filter)) filterRating();
         else filterRAM(filter);
     }
-
 
     private void filterRAM(String ram) {
         moveToElement(filterRamBlock);
@@ -131,13 +125,15 @@ public class SearchResultsPage extends AbstractPage {
         fieldFrom.sendKeys(price.replaceAll("\\D", ""));
     }
 
-    private String getItemName(WebElement element) {return element.findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
-    private String getItemName(Integer index) {return getItemByIndex(index).findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
-    private String getItemName(String index) {return getItemByIndex(Integer.parseInt(index)).findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
+    private String getItemName(Integer index) {
+        return getItemByIndex(index).findElement(By.xpath(itemName))
+                .getText().replaceAll("\"\\s", "");
+    }
 
-    private Integer getItemPrice(WebElement element) {return Integer.parseInt(element.findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
-    private Integer getItemPrice(Integer index) {return Integer.parseInt(getItemByIndex(index).findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
-    private Integer getItemPrice(String index) {return Integer.parseInt(getItemByIndex(Integer.parseInt(index)).findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
+    private Integer getItemPrice(Integer index) {
+        return Integer.parseInt(getItemByIndex(index).findElement(By.xpath(itemPrice))
+                .getText().replaceAll("\\D", ""));
+    }
 
     public void addToCart(Integer index) {
         smartClick(getItemByIndex(index).findElement(By.xpath(itemAdd)));
