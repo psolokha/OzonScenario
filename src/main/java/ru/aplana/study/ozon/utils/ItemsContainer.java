@@ -1,33 +1,49 @@
 package ru.aplana.study.ozon.utils;
 
-import java.util.HashMap;
+
+import java.util.TreeMap;
 
 public class ItemsContainer {
 
-    private static HashMap<String, Integer> container = new HashMap<>();
+    private  TreeMap<String, Integer> container;
+    private static ItemsContainer instance;
 
-    public static void putItem(String item, Integer price) {
+    private ItemsContainer() {
+        container = new TreeMap<>();
+        instance = this;
+    }
+
+    public static ItemsContainer getInstance() {
+        return instance == null ? new ItemsContainer() : instance;
+    }
+
+    public void putItem(String item, Integer price) {
         if (container.containsKey(item)) container.replace(item, (container.get(item) + price));
         else container.put(item, price);
     }
 
-    public static void removeItem(String item, Integer price) {
-        if (container.get(item) == price) container.remove(item);
+    public void removeItem(String item, Integer price) {
+        if (container.get(item).equals(price)) container.remove(item);
         else container.replace(item, (container.get(item) - price));
     }
 
-    public static Integer getNumberItems() {
+    public Integer getNumberItems() {
         return container.size();
     }
 
-    public static void printItems() {
-        System.out.println(new ItemsContainer().toString());
+    public void removeAll() {
+        container.clear();
+    }
+
+    public String checkMostExpensive() {
+        return container.firstEntry().getKey() + ": " + container.firstEntry().getValue();
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        container.forEach((item, price) -> stringBuilder.append(item + ": " + price + '\n'));
+        container.forEach((item, price) -> stringBuilder.append(item).append(": ").append(price).append('\n'));
         return stringBuilder.toString();
     }
+
 }

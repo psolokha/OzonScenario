@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 public abstract class AbstractPage {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     AbstractPage(){
         driver = DriverController.getDriver();
@@ -37,7 +37,7 @@ public abstract class AbstractPage {
     }
 
     void waitElement(WebElement element) {
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
+        new WebDriverWait(driver, 10).ignoring(WebDriverException.class).until(ExpectedConditions.visibilityOf(element));
     }
 
     void pause() {
@@ -47,15 +47,11 @@ public abstract class AbstractPage {
     void smartClick(WebElement element) {
         new WebDriverWait(driver, 10).ignoring(
                 WebDriverException.class)
-                .until( new Function<WebDriver, Boolean>() {
-
-            @Override
-            public Boolean apply(WebDriver driver) {
-                element.click();
-                return true;
-            }
-
-        });
+                .until(driver -> {
+                    moveToElement(element);
+                    element.click();
+                    return true;
+                });
     }
 
     public void searchItem(String itemToSearch) {

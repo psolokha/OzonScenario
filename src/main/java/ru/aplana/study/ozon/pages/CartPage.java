@@ -2,6 +2,7 @@ package ru.aplana.study.ozon.pages;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ru.aplana.study.ozon.utils.ItemsContainer;
 
 import java.util.List;
 
@@ -24,6 +25,10 @@ public class CartPage extends AbstractPage {
 
     @FindBy(xpath = "//div[@delete_button_name='Удалить выбранные']/span")
     private WebElement clickDeleteAllItems;
+
+    public Integer getNumberItems() {
+        return listCartItems.size();
+    }
 
     public String getTotalItemsMessage() {
         waitElement(numberItemsMessage);

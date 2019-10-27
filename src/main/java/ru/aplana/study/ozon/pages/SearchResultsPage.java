@@ -10,8 +10,9 @@ import java.util.List;
 public class SearchResultsPage extends AbstractPage {
 
     private String itemName = ".//span[@data-test-id = 'tile-name']";
-    String itemPrice = ".//span[@data-test-id = 'tile-price']";
-    String itemAdd = ".//button[contains(@class, 'buy-text-button')]/div";
+    private String itemPrice = ".//span[@data-test-id = 'tile-price']";
+    private String itemAdd = ".//button[contains(@class, 'buy-text-button')]/div";
+    private String brandName = ".//span[@class = 'label-text']";
 
     @FindBy(xpath = "//div[contains(@class, 'paginator column__item_remove-margin')]")
     private WebElement resultBlock;
@@ -34,6 +35,47 @@ public class SearchResultsPage extends AbstractPage {
     @FindBy(xpath = "//div[@data-test-id = 'filter-block-ram']")
     private WebElement filterRamBlock;
 
+    @FindBy(xpath = "//div[@data-test-id = 'filter-block-brand']")
+    private WebElement filterBrandsBlock;
+
+    @FindBy(xpath = "//div[@data-test-id = 'filter-block-brand']//span[@class = 'show-text']")
+    private  WebElement showAllBrands;
+
+    @FindBy(xpath = "//div[@data-test-id = 'filter-block-brand']//input[@class = 'input']")
+    private WebElement filterBrandsInput;
+
+    @FindBy(xpath = "//div[@data-test-id = 'filter-block-brand']//label[@class = 'label']")
+    private List<WebElement> listBrands;
+
+    @FindBy(xpath = "//div[@data-test-id = 'filter-block-brand']//label[@class = 'label']//span[@class = 'checkmark']")
+    private WebElement checkboxBrand;
+
+    @FindBy(xpath = "//div[@class='search-show-container']/label")
+    private WebElement brandItem;
+
+
+
+    public void filterBrands(String... brands) {
+        moveToElement(filterBrandsBlock);
+        smartClick(showAllBrands);
+        waitElement(filterBrandsInput);
+        for (String str : brands) {
+            waitElement(filterBrandsInput);
+            waitElement(brandItem);
+            smartClick(filterBrandsInput);
+            filterBrandsInput.clear();
+            filterBrandsInput.sendKeys(str);
+            for (WebElement element : listBrands) {
+                if (element.findElement(By.xpath(brandName)).getText()
+                        .replaceAll("\\W", "")
+                        .equalsIgnoreCase(str)) {
+                    smartClick(checkboxBrand);
+                    waitElement(resultBlock);
+                }
+            }
+        }
+    }
+
 
 
 
@@ -48,7 +90,13 @@ public class SearchResultsPage extends AbstractPage {
         return null;
     }
 
-    public void filterRAM(String ram) {
+    public void setFilter(String filter) {
+        if ("Высокий рейтинг".equalsIgnoreCase(filter)) filterRating();
+        else filterRAM(filter);
+    }
+
+
+    private void filterRAM(String ram) {
         moveToElement(filterRamBlock);
         for (WebElement element: listCheackboxRAM) {
             if (element.findElement(By.xpath(".//span[@class = 'label-text']")).getText().replaceAll("\\D", "").equalsIgnoreCase(ram.replaceAll("\\D", ""))) {
@@ -60,7 +108,7 @@ public class SearchResultsPage extends AbstractPage {
         System.out.println("No such RAM value");
     }
 
-    public void filterRating() {
+    private void filterRating() {
         smartClick(checkboxRating);
         waitElement(resultBlock);
     }
@@ -83,16 +131,16 @@ public class SearchResultsPage extends AbstractPage {
         fieldFrom.sendKeys(price.replaceAll("\\D", ""));
     }
 
-    public String getItemName(WebElement element) {return element.findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
-    public String getItemName(Integer index) {return getItemByIndex(index).findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
-    public String getItemName(String index) {return getItemByIndex(Integer.parseInt(index)).findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
+    private String getItemName(WebElement element) {return element.findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
+    private String getItemName(Integer index) {return getItemByIndex(index).findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
+    private String getItemName(String index) {return getItemByIndex(Integer.parseInt(index)).findElement(By.xpath(itemName)).getText().replaceAll("\"\\s", "");}
 
-    public Integer getItemPrice(WebElement element) {return Integer.parseInt(element.findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
-    public Integer getItemPrice(Integer index) {return Integer.parseInt(getItemByIndex(index).findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
-    public Integer getItemPrice(String index) {return Integer.parseInt(getItemByIndex(Integer.parseInt(index)).findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
+    private Integer getItemPrice(WebElement element) {return Integer.parseInt(element.findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
+    private Integer getItemPrice(Integer index) {return Integer.parseInt(getItemByIndex(index).findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
+    private Integer getItemPrice(String index) {return Integer.parseInt(getItemByIndex(Integer.parseInt(index)).findElement(By.xpath(itemPrice)).getText().replaceAll("\\D", ""));}
 
     public void addToCart(Integer index) {
         smartClick(getItemByIndex(index).findElement(By.xpath(itemAdd)));
-        ItemsContainer.putItem(getItemName(index), getItemPrice(index));
+        ItemsContainer.getInstance().putItem(getItemName(index), getItemPrice(index));
     }
 }
