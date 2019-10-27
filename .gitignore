@@ -1,5 +1,4 @@
 # Default ignored directories
-.idea
 /target
 /.allure
 /allure-results
