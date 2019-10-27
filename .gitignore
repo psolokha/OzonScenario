@@ -1,4 +1,6 @@
 # Default ignored directories
+.idea
+/.idea
 /target
 /.allure
 /allure-results
@@ -6,3 +8,4 @@
 
 # Default ignored files
 *.iml
+*.idea
