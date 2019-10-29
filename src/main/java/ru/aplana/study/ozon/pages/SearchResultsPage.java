@@ -1,11 +1,17 @@
 package ru.aplana.study.ozon.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.aplana.study.ozon.utils.ItemsContainer;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static ru.aplana.study.ozon.utils.DriverController.getDriver;
 
 public class SearchResultsPage extends AbstractPage {
 
@@ -136,7 +142,27 @@ public class SearchResultsPage extends AbstractPage {
     }
 
     public void addToCart(Integer index) {
+        waitPageLoaded();
+        ((JavascriptExecutor) getDriver())
+                .executeScript("return arguments[0].scrollIntoView(false)",  getItemByIndex(index));
         smartClick(getItemByIndex(index).findElement(By.xpath(itemAdd)));
         ItemsContainer.getInstance().putItem(getItemName(index), getItemPrice(index));
+    }
+
+
+    private boolean isElementPresent(By locator) {
+        try{
+            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+            WebElement element = driver.findElement(locator);
+            return element.isDisplayed();
+        } catch (Exception e) {
+            driver.manage().timeouts().implicitlyWait(45,TimeUnit.SECONDS);
+            return false;
+        }
+    }
+
+    private void waitPageLoaded() {
+        new WebDriverWait(driver, 45)
+                .until((ExpectedCondition<Boolean>) webDriver -> !isElementPresent(By.xpath("//div[contains(@class , 'parandja')]")));
     }
 }

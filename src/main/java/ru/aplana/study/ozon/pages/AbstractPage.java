@@ -14,7 +14,7 @@ import ru.aplana.study.ozon.utils.DriverController;
 
 public abstract class AbstractPage {
 
-    private WebDriver driver;
+    WebDriver driver;
 
     AbstractPage(){
         driver = DriverController.getDriver();

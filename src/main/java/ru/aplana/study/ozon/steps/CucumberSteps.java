@@ -1,8 +1,8 @@
 package ru.aplana.study.ozon.steps;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.ru.Дано;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
+import cucumber.api.java.ru.Дано;
 import ru.aplana.study.ozon.utils.DriverController;
 
 public class CucumberSteps {

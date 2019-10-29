@@ -10,8 +10,7 @@ import ru.aplana.study.ozon.utils.ItemsContainer;
 
 import java.util.StringTokenizer;
 
-
-public class AllureSteps {
+class AllureSteps {
 
     private SearchResultsPage results = new SearchResultsPage();
     private CartPage cart = new CartPage();
@@ -70,8 +69,7 @@ public class AllureSteps {
     }
 
     @Step("Отфильтровать по брендам {brands}")
-    public void filterBrands(String brands) {
-        System.out.println(brands);
+    void filterBrands(String brands) {
         StringTokenizer tokenizer = new StringTokenizer(brands, "., ;/\\\"'");
         String[] brandsList = new String[tokenizer.countTokens()];
         int i = 0;
