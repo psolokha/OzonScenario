@@ -1,6 +1,8 @@
 package ru.aplana.study.ozon.utils;
 
 
+import java.util.Comparator;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class ItemsContainer {
@@ -36,7 +38,8 @@ public class ItemsContainer {
     }
 
     public String checkMostExpensive() {
-        return container.firstEntry().getKey() + ": " + container.firstEntry().getValue();
+            Map.Entry<String, Integer> maxPrice = container.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get();
+        return maxPrice.getKey() + ": " + maxPrice.getValue();
     }
 
     @Override
